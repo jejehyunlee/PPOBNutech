@@ -1,0 +1,367 @@
+{
+	"info": {
+		"_postman_id": "1e008a0b-4f59-4bab-9b4c-e8d33ea876a7",
+		"name": "NUTECH_PPOB_CollectionsJSON",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21524155"
+	},
+	"item": [
+		{
+			"name": "ppob_DATA_JSON",
+			"item": [
+				{
+					"name": "Customer",
+					"item": [
+						{
+							"name": "getProfile",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/customer/get/profile",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"customer",
+										"get",
+										"profile"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getBalance",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKZWZyaTEyMzRAZ21haWwuY29tIiwiaWF0IjoxNzI4ODMwMTEyLCJleHAiOjE3MjkxMzAxMTJ9.Jr3f384sg4UGyHOj54iYi_tZ8vKIUEcEjUXCsobNmWPRWgvZISvYWQuTlfwHikASy83Sr3My2Zuvk_MOZKy6Dg",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/customer/profile/balance",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"customer",
+										"profile",
+										"balance"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "updateProfile",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKZWZyaTEyMzRAZ21haWwuY29tIiwiaWF0IjoxNzI4ODI4MTU0LCJleHAiOjE3MjkxMjgxNTR9.HAfb66TnARM4_F8R2Ed_7-NgXwIgrTZ94EyXjnMGrwLJ3GRsjUotgmykPPkEGNL0canSVr_LMD-VjjhcQIHIFg",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"first_name\": \"jeje\",\r\n  \"last_name\": \"Nutech\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/customer/profile/update",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"customer",
+										"profile",
+										"update"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "uploadeImage",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKZWZyaTEyMzRAZ21haWwuY29tIiwiaWF0IjoxNzI4ODI4MTU0LCJleHAiOjE3MjkxMjgxNTR9.HAfb66TnARM4_F8R2Ed_7-NgXwIgrTZ94EyXjnMGrwLJ3GRsjUotgmykPPkEGNL0canSVr_LMD-VjjhcQIHIFg",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "file",
+											"type": "file",
+											"src": "/C:/Users/JEJE/Downloads/JC.png"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/customer/profile/uploade/image",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"customer",
+										"profile",
+										"uploade",
+										"image"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Auth",
+					"item": [
+						{
+							"name": "register",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"Jefri1234@gmail.com\",\r\n    \"first_name\": \"Jefri\",\r\n    \"last_name\": \"Saputra\",\r\n    \"password\": \"12345678910\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/ppob/api/register",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"ppob",
+										"api",
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "login",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"Jefri1234@gmail.com\",\r\n    \"password\": \"12345678910\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/ppob/api/login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"ppob",
+										"api",
+										"login"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Transaction",
+					"item": [
+						{
+							"name": "top-up",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKZWZyaTEyMzRAZ21haWwuY29tIiwiaWF0IjoxNzI4ODMwMTEyLCJleHAiOjE3MjkxMzAxMTJ9.Jr3f384sg4UGyHOj54iYi_tZ8vKIUEcEjUXCsobNmWPRWgvZISvYWQuTlfwHikASy83Sr3My2Zuvk_MOZKy6Dg",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"top_up_amount\": 100\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/customer/topup",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"customer",
+										"topup"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "transaction",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKZWZyaTEyMzRAZ21haWwuY29tIiwiaWF0IjoxNzI4ODMwMTEyLCJleHAiOjE3MjkxMzAxMTJ9.Jr3f384sg4UGyHOj54iYi_tZ8vKIUEcEjUXCsobNmWPRWgvZISvYWQuTlfwHikASy83Sr3My2Zuvk_MOZKy6Dg",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"serviceCode\": \"PLN\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/customer/transaction",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"customer",
+										"transaction"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "transactionHistory",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Banner",
+					"item": [
+						{
+							"name": "getAll",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/ppob/api/banner",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"ppob",
+										"api",
+										"banner"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Service",
+					"item": [
+						{
+							"name": "getAll",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/ppob/api/service",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"ppob",
+										"api",
+										"service"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}
