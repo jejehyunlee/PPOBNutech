@@ -1,16 +1,17 @@
 package com.testtech.nutech.controller;
 
 import com.testtech.nutech.entity.Transaction;
+import com.testtech.nutech.handler.ResponeHandler;
 import com.testtech.nutech.model.request.TransactionRequest;
 import com.testtech.nutech.repository.ServiceRepository;
 import com.testtech.nutech.service.serviceimpl.TransactionServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 
 @RestController
@@ -42,6 +43,19 @@ public class TransactionController {
            e.getMessage();
         }
         return null;
+    }
+
+    @GetMapping("/history")
+    public ResponseEntity<ResponeHandler<Object>> getTransactionHistory(
+            @RequestParam(value = "limit", required = false) Integer limit, HttpServletRequest request) {
+
+        // Panggil service untuk mengambil data transaksi
+        String getToken = request.getHeader("Authorization").substring(7);
+        Map<String, Object> historyData = transactionService.getTransactionHistory(getToken, limit);
+
+        // Response sukses
+        ResponeHandler<Object> response = new ResponeHandler<>(0, "Get History Berhasil", historyData);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 

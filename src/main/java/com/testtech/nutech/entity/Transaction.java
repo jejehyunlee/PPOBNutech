@@ -57,10 +57,10 @@ public class Transaction {
 
     private String idCust;
 
-//    @JsonInclude(JsonInclude.Include.NON_NULL) // Mengabaikan jika bernilai null
-//    @ManyToOne // Relasi dengan entitas Service
-//    @JoinColumn(name = "customer_id") // Pastikan service_id ada
-//    private Customer customer;
+    @JsonInclude(JsonInclude.Include.NON_NULL) // Mengabaikan jika bernilai null
+    @ManyToOne // Relasi dengan entitas Service
+    @JoinColumn(name = "customer_id") // Pastikan service_id ada
+    private Customer customer;
 
 
 }

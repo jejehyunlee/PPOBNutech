@@ -21,7 +21,7 @@ public class TransactionResponse {
 
     private String invoiceNumber;
     private String serviceCode;
-    private String serviceName;
+    private String serviceDesc;
     private String transactionType;
     private Integer totalAmount;
     @JsonSerialize(using = LocalDateTimeSerializer.class)

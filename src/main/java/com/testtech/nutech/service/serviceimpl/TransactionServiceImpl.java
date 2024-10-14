@@ -13,15 +13,15 @@ import com.testtech.nutech.repository.TransactionRepository;
 import com.testtech.nutech.security.JwtUtils;
 import com.testtech.nutech.service.TransactionService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -35,7 +35,6 @@ public class TransactionServiceImpl implements TransactionService {
 
     private final ServiceRepository serviceRepository;
 
-    private final ServiceRequest services;
 
     @Override
     public ResponseEntity<Object> topUpBalance(String token, TransactionRequest request) {
@@ -95,7 +94,7 @@ public class TransactionServiceImpl implements TransactionService {
 
         // Cari service berdasarkan service_code
         Optional<Services> serviceOpt = serviceRepository.findByServiceCode(request.getServiceCode());
-        if (!serviceOpt.isPresent()) {
+        if (serviceOpt.isEmpty()) {
             ResponeHandler<Object> response = new ResponeHandler<>(102, "Service ataus Layanan tidak ditemukan", null);
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
@@ -124,7 +123,7 @@ public class TransactionServiceImpl implements TransactionService {
             transaction.setTop_up_amount(service.getServiceTariff());
             transaction.setCreatedOn(LocalDateTime.now());
             transaction.setService(service); // Pastikan ServiceID di-set
-            transaction.setIdCust(customer.getIdCustomer());// Pastikan custumerID di-set
+            transaction.setCustomer(customer);// Pastikan custumerID di-set
             transactionRepository.save(transaction);
 
 
@@ -141,6 +140,47 @@ public class TransactionServiceImpl implements TransactionService {
         // Mengembalikan ResponeHandler dengan TransactionResponse
         ResponeHandler<TransactionResponse> response = new ResponeHandler<>(0, "Transaksi berhasil", transactionResponse);
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+
+    @Override
+    public Map<String, Object> getTransactionHistory(String token, Integer limit) {
+
+        String email = jwtUtils.getEmailByToken(token);
+
+        List<Transaction> transactions;
+        if (limit == null || limit <= 0) {
+            transactions = transactionRepository.findByCustomerEmailOrderByCreatedOnDesc(email);
+        } else {
+            PageRequest pageRequest = PageRequest.of(0, limit);
+            transactions = transactionRepository.findByCustomerEmailOrderByCreatedOnDesc(email, pageRequest);
+        }
+
+        // Gunakan Builder Pattern untuk membuat objek response records
+        List<Map<String, Object>> records = transactions.stream()
+                .map(transaction -> {
+                    Map<String, Object> record = new HashMap<>();
+                    record.put("invoice_number", transaction.getInvoiceNumber());
+                    record.put("transaction_type", transaction.getTransactionType());
+                    record.put("description", transaction.getServiceName());
+                    record.put("total_amount", transaction.getTop_up_amount() != null ? transaction.getTop_up_amount() : 0);
+                    record.put("created_on", transaction.getCreatedOn() != null ? transaction.getCreatedOn().toString() : null);
+                    return record;
+                })
+                .collect(Collectors.toList());
+
+        System.out.println("Records: " + records);
+
+        // Data offset, limit, dan records
+        Map<String, Object> data = new HashMap<>();
+        data.put("offset", 0); // Ini bisa disesuaikan untuk pagination
+        data.put("limit", (limit != null) ? limit : transactions.size());
+        data.put("records", records);
+
+        System.out.println("Transactions: " + transactions.size());
+        // Gunakan ResponseHandler untuk membuat response yang sukses
+
+        return data;
     }
 
 }
