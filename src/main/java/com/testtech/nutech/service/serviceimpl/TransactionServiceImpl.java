@@ -56,14 +56,17 @@ public class TransactionServiceImpl implements TransactionService {
 
             currentCustomer.setBalance(currentBalance + request.getTop_up_amount());
 
+            String invoice = LocalDateTime.now() + "TOP-UP";
 
             customerRepository.save(currentCustomer);
 
                 Transaction transaction = new Transaction();
+                transaction.setInvoiceNumber(invoice);
                 transaction.setTransactionType("TOP UP");
-                transaction.setCreatedOn(request.getCreatedOn());
+                transaction.setServiceName("TOP UP BALANCE");
+                transaction.setTop_up_amount(request.getTop_up_amount());
                 transaction.setCreatedOn(LocalDateTime.now());
-                transaction.setIdCust(currentCustomer.getIdCustomer());
+                transaction.setCustomer(currentCustomer);
 
                 // Simpan transaksi ke database
                 transactionRepository.saveAndFlush(transaction);
@@ -74,7 +77,7 @@ public class TransactionServiceImpl implements TransactionService {
             Map<String, Object> data = new HashMap<>();
             data.put("balance", currentCustomer.getBalance());
             ResponeHandler<Object> response = new ResponeHandler<>(0, "Top Up Balance berhasil", data);
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(response, HttpStatus.OK);
         }
         return null;
     }
@@ -163,22 +166,17 @@ public class TransactionServiceImpl implements TransactionService {
                     record.put("invoice_number", transaction.getInvoiceNumber());
                     record.put("transaction_type", transaction.getTransactionType());
                     record.put("description", transaction.getServiceName());
-                    record.put("total_amount", transaction.getTop_up_amount() != null ? transaction.getTop_up_amount() : 0);
+                    record.put("total_amount", transaction.getTop_up_amount());
                     record.put("created_on", transaction.getCreatedOn() != null ? transaction.getCreatedOn().toString() : null);
                     return record;
                 })
                 .collect(Collectors.toList());
-
-        System.out.println("Records: " + records);
 
         // Data offset, limit, dan records
         Map<String, Object> data = new HashMap<>();
         data.put("offset", 0); // Ini bisa disesuaikan untuk pagination
         data.put("limit", (limit != null) ? limit : transactions.size());
         data.put("records", records);
-
-        System.out.println("Transactions: " + transactions.size());
-        // Gunakan ResponseHandler untuk membuat response yang sukses
 
         return data;
     }
