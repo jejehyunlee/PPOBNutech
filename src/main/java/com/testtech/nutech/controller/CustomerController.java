@@ -43,7 +43,7 @@ public class CustomerController {
     }
 
     @SecurityRequirement(name = "bearer")
-    @GetMapping(value = "/get/profile")
+    @GetMapping(value = "/profile")
     public ResponseEntity<Object> customerGetProfile(HttpServletRequest request) {
 
         String token = request.getHeader("Authorization").substring(7);
