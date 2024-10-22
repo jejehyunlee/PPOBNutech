@@ -11,7 +11,7 @@
  Target Server Version : 100425 (10.4.25-MariaDB)
  File Encoding         : 65001
 
- Date: 15/10/2024 03:49:30
+ Date: 22/10/2024 22:28:22
 */
 
 SET NAMES utf8mb4;
@@ -32,7 +32,7 @@ CREATE TABLE `m_banner`  (
 -- ----------------------------
 -- Records of m_banner
 -- ----------------------------
-INSERT INTO `m_banner` VALUES (1, 'ddd', 'ddd', 'ddd');
+INSERT INTO `m_banner` VALUES (1, 'ddd', 'ddddd', 'ddd');
 
 -- ----------------------------
 -- Table structure for m_customer
@@ -54,21 +54,7 @@ CREATE TABLE `m_customer`  (
 -- ----------------------------
 -- Records of m_customer
 -- ----------------------------
-INSERT INTO `m_customer` VALUES ('40ed7568-37ba-4c3d-8e28-d883955993bf', 799500, 'Jefri1234@gmail.com', 'Jefri', 'Saputra', NULL, '66032f28-a8f2-471d-af4b-c8caf7fe179e');
-
--- ----------------------------
--- Table structure for m_role
--- ----------------------------
-DROP TABLE IF EXISTS `m_role`;
-CREATE TABLE `m_role`  (
-  `id_role` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `role` enum('ROLE_ADMIN','ROLE_CUSTOMER','ROLE_SELLER') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  PRIMARY KEY (`id_role`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of m_role
--- ----------------------------
+INSERT INTO `m_customer` VALUES ('6fa7f676-f637-4308-a43a-0f7efb428d9b', 10800, 'jejej989@gmail.com', 'Jefri', 'Amel', 'http://localhost:8080/uploads/6a7c7ce9-20c6-458a-a792-ee9885dbd382_foto dwi utomo.JPG', '6c0e73f9-ee35-4bd9-9ad0-835258e6dbfc');
 
 -- ----------------------------
 -- Table structure for m_service
@@ -88,7 +74,7 @@ CREATE TABLE `m_service`  (
 -- ----------------------------
 -- Records of m_service
 -- ----------------------------
-INSERT INTO `m_service` VALUES (1, 'PLN', 'PLN', 100, 1);
+INSERT INTO `m_service` VALUES (1, 'PLN', 'TOKEN PLN', 100, 1);
 
 -- ----------------------------
 -- Table structure for m_transaction
@@ -106,45 +92,19 @@ CREATE TABLE `m_transaction`  (
   `service_id` bigint NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `UKbfslqy6hiqe1ggluadgxt6c1w`(`invoice_number` ASC) USING BTREE,
-  INDEX `FKampsrgjwpb5nkxqkbi24y221y`(`service_id` ASC) USING BTREE,
   INDEX `FKkydv7fvax8cgav3962gt8hadi`(`customer_id` ASC) USING BTREE,
+  INDEX `FKampsrgjwpb5nkxqkbi24y221y`(`service_id` ASC) USING BTREE,
   CONSTRAINT `FKampsrgjwpb5nkxqkbi24y221y` FOREIGN KEY (`service_id`) REFERENCES `m_service` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `FKkydv7fvax8cgav3962gt8hadi` FOREIGN KEY (`customer_id`) REFERENCES `m_customer` (`id_customer`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 14 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of m_transaction
 -- ----------------------------
-INSERT INTO `m_transaction` VALUES (1, '2024-10-15 03:39:46.000000', NULL, NULL, 'TOP UP BALANCE', NULL, 'TOP UP', '40ed7568-37ba-4c3d-8e28-d883955993bf', NULL);
-INSERT INTO `m_transaction` VALUES (2, '2024-10-15 03:39:56.000000', 'INV2024-10-15T03:39:56.556769600-a1ce0', 'PLN', 'PLN', 100, 'PAYMENT', '40ed7568-37ba-4c3d-8e28-d883955993bf', 1);
-INSERT INTO `m_transaction` VALUES (3, '2024-10-15 03:42:32.000000', NULL, NULL, 'TOP UP BALANCE', NULL, 'TOP UP', '40ed7568-37ba-4c3d-8e28-d883955993bf', NULL);
-INSERT INTO `m_transaction` VALUES (4, '2024-10-15 03:42:37.000000', NULL, NULL, 'TOP UP BALANCE', NULL, 'TOP UP', '40ed7568-37ba-4c3d-8e28-d883955993bf', NULL);
-INSERT INTO `m_transaction` VALUES (5, '2024-10-15 03:42:43.000000', NULL, NULL, 'TOP UP BALANCE', NULL, 'TOP UP', '40ed7568-37ba-4c3d-8e28-d883955993bf', NULL);
-INSERT INTO `m_transaction` VALUES (6, '2024-10-15 03:42:58.000000', 'INV2024-10-15T03:42:58.072146800-75acf', 'PLN', 'PLN', 100, 'PAYMENT', '40ed7568-37ba-4c3d-8e28-d883955993bf', 1);
-INSERT INTO `m_transaction` VALUES (7, '2024-10-15 03:42:59.000000', 'INV2024-10-15T03:42:59.598587-50981', 'PLN', 'PLN', 100, 'PAYMENT', '40ed7568-37ba-4c3d-8e28-d883955993bf', 1);
-INSERT INTO `m_transaction` VALUES (8, '2024-10-15 03:46:23.000000', '2024-10-15T03:46:22.963251100TOP-UP', NULL, 'TOP UP BALANCE', 100000, 'TOP UP', '40ed7568-37ba-4c3d-8e28-d883955993bf', NULL);
-INSERT INTO `m_transaction` VALUES (9, '2024-10-15 03:46:24.000000', '2024-10-15T03:46:24.557678TOP-UP', NULL, 'TOP UP BALANCE', 100000, 'TOP UP', '40ed7568-37ba-4c3d-8e28-d883955993bf', NULL);
-INSERT INTO `m_transaction` VALUES (10, '2024-10-15 03:46:26.000000', '2024-10-15T03:46:26.829183400TOP-UP', NULL, 'TOP UP BALANCE', 100000, 'TOP UP', '40ed7568-37ba-4c3d-8e28-d883955993bf', NULL);
-INSERT INTO `m_transaction` VALUES (11, '2024-10-15 03:46:29.000000', '2024-10-15T03:46:29.348131500TOP-UP', NULL, 'TOP UP BALANCE', 100000, 'TOP UP', '40ed7568-37ba-4c3d-8e28-d883955993bf', NULL);
-INSERT INTO `m_transaction` VALUES (12, '2024-10-15 03:48:41.000000', 'INV2024-10-15T03:48:41.522670200-ba59a', 'PLN', 'PLN', 100, 'PAYMENT', '40ed7568-37ba-4c3d-8e28-d883955993bf', 1);
-INSERT INTO `m_transaction` VALUES (13, '2024-10-15 03:48:43.000000', 'INV2024-10-15T03:48:43.205612200-c1376', 'PLN', 'PLN', 100, 'PAYMENT', '40ed7568-37ba-4c3d-8e28-d883955993bf', 1);
-
--- ----------------------------
--- Table structure for m_user_role
--- ----------------------------
-DROP TABLE IF EXISTS `m_user_role`;
-CREATE TABLE `m_user_role`  (
-  `id_user_credential` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `role_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  INDEX `FK8r0vgj4oh9yadj6wx62tk0p5m`(`role_id` ASC) USING BTREE,
-  INDEX `FK5myajstt3aviu653dg1r529d4`(`id_user_credential` ASC) USING BTREE,
-  CONSTRAINT `FK5myajstt3aviu653dg1r529d4` FOREIGN KEY (`id_user_credential`) REFERENCES `user_credential` (`user_credential_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  CONSTRAINT `FK8r0vgj4oh9yadj6wx62tk0p5m` FOREIGN KEY (`role_id`) REFERENCES `m_role` (`id_role`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of m_user_role
--- ----------------------------
+INSERT INTO `m_transaction` VALUES (1, '2024-10-22 21:42:42.000000', '2024-10-22T21:42:42.639075300TOP UP', NULL, 'TOP UP BALANCE', 10000, 'TOP UP', '6fa7f676-f637-4308-a43a-0f7efb428d9b', NULL);
+INSERT INTO `m_transaction` VALUES (2, '2024-10-22 21:43:26.000000', 'INV2024-10-22T21:43:26.958746-614f5', 'PLN', 'TOKEN PLN', 100, 'PAYMENT', '6fa7f676-f637-4308-a43a-0f7efb428d9b', 1);
+INSERT INTO `m_transaction` VALUES (3, '2024-10-22 21:50:48.000000', '2024-10-22T21:50:48.568639800TOP UP', NULL, 'TOP UP BALANCE', 1000, 'TOP UP', '6fa7f676-f637-4308-a43a-0f7efb428d9b', NULL);
+INSERT INTO `m_transaction` VALUES (4, '2024-10-22 21:51:00.000000', 'INV2024-10-22T21:51:00.650139900-357a5', 'PLN', 'TOKEN PLN', 100, 'PAYMENT', '6fa7f676-f637-4308-a43a-0f7efb428d9b', 1);
 
 -- ----------------------------
 -- Table structure for user_credential
@@ -161,6 +121,6 @@ CREATE TABLE `user_credential`  (
 -- ----------------------------
 -- Records of user_credential
 -- ----------------------------
-INSERT INTO `user_credential` VALUES ('66032f28-a8f2-471d-af4b-c8caf7fe179e', 'Jefri1234@gmail.com', '$2a$10$BRUdBV9Uk0DWp62bQf5/BOS1B3mT3Exk.q1EPQ9iQmSyYgigj4rdK');
+INSERT INTO `user_credential` VALUES ('6c0e73f9-ee35-4bd9-9ad0-835258e6dbfc', 'jejej989@gmail.com', '$2a$10$uIJaIApwi8UVBbhvRbQp6.pxLPnVde0C4pYidoRkEqVjepSW7fJ3y');
 
 SET FOREIGN_KEY_CHECKS = 1;
