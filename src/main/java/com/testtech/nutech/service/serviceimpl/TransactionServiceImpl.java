@@ -5,6 +5,8 @@ import com.testtech.nutech.entity.Services;
 import com.testtech.nutech.entity.Transaction;
 import com.testtech.nutech.handler.ResponeHandler;
 import com.testtech.nutech.model.request.ServiceRequest;
+import com.testtech.nutech.model.request.TopUpRequest;
+import com.testtech.nutech.model.request.TransactionProcessRequest;
 import com.testtech.nutech.model.request.TransactionRequest;
 import com.testtech.nutech.model.response.TransactionResponse;
 import com.testtech.nutech.repository.CustomerRepository;
@@ -37,7 +39,7 @@ public class TransactionServiceImpl implements TransactionService {
 
 
     @Override
-    public ResponseEntity<Object> topUpBalance(String token, TransactionRequest request) {
+    public ResponseEntity<Object> topUpBalance(String token, TopUpRequest request) {
 
         String email = jwtUtils.getEmailByToken(token);
 
@@ -45,7 +47,7 @@ public class TransactionServiceImpl implements TransactionService {
 
         if (customer.isPresent()) {
             // Validasi amount
-            if (request.getTop_up_amount() == null || request.getTop_up_amount() <= 0) {
+            if (request.getAmmount() == null || request.getAmmount() <= 0) {
                 ResponeHandler<Object> response = new ResponeHandler<>(102, "Paramter amount hanya boleh angka dan tidak boleh lebih kecil dari 0", null);
                 return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
             }
@@ -54,19 +56,19 @@ public class TransactionServiceImpl implements TransactionService {
 
             int currentBalance = Optional.ofNullable(currentCustomer.getBalance()).orElse(0);
 
-            currentCustomer.setBalance(currentBalance + request.getTop_up_amount());
+            currentCustomer.setBalance(currentBalance + request.getAmmount());
 
-            String invoice = LocalDateTime.now() + "TOP-UP";
+            String invoiceGenerate = LocalDateTime.now() + "TOP UP";
 
             customerRepository.save(currentCustomer);
 
                 Transaction transaction = new Transaction();
-                transaction.setInvoiceNumber(invoice);
-                transaction.setTransactionType("TOP UP");
+                transaction.setInvoiceNumber(invoiceGenerate);
+                transaction.setTop_up_amount(request.getAmmount());
                 transaction.setServiceName("TOP UP BALANCE");
-                transaction.setTop_up_amount(request.getTop_up_amount());
-                transaction.setCreatedOn(LocalDateTime.now());
+                transaction.setTransactionType("TOP UP");
                 transaction.setCustomer(currentCustomer);
+                transaction.setCreatedOn(LocalDateTime.now());
 
                 // Simpan transaksi ke database
                 transactionRepository.saveAndFlush(transaction);
@@ -83,7 +85,7 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public ResponseEntity<Object> ProcessTransaction(String token, Transaction request) {
+    public ResponseEntity<Object> ProcessTransaction(String token, TransactionProcessRequest request) {
         String email = jwtUtils.getEmailByToken(token);
 
         Optional<Customer> customerOpt = customerRepository.findByEmail(email);
@@ -120,7 +122,7 @@ public class TransactionServiceImpl implements TransactionService {
             // Simpan transaksi
             Transaction transaction = new Transaction();
             transaction.setInvoiceNumber(invoiceNumber);
-            transaction.setServiceCode(service.getServiceCode());
+            transaction.setServiceCode(request.getServiceCode());
             transaction.setServiceName(service.getServiceName());
             transaction.setTransactionType("PAYMENT");
             transaction.setTop_up_amount(service.getServiceTariff());

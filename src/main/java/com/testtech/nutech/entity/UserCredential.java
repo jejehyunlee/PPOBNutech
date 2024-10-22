@@ -40,17 +40,17 @@ public class UserCredential {
     @Column(name = "password")
     private String password;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "m_user_role",
-    joinColumns = @JoinColumn(
-            name = "id_user_credential",
-            referencedColumnName = "user_credential_id"
-    ),
-            inverseJoinColumns = @JoinColumn(
-                    name = "role_id",
-                    referencedColumnName = "id_role"
-            )
-    )
-    private List<Role> roles;
+//    @ManyToMany(fetch = FetchType.EAGER)
+//    @JoinTable(name = "m_user_role",
+//    joinColumns = @JoinColumn(
+//            name = "id_user_credential",
+//            referencedColumnName = "user_credential_id"
+//    ),
+//            inverseJoinColumns = @JoinColumn(
+//                    name = "role_id",
+//                    referencedColumnName = "id_role"
+//            )
+//    )
+//    private List<Role> roles;
 
 }

@@ -13,7 +13,7 @@ Version 1.0
 
 import com.testtech.nutech.entity.Customer;
 import com.testtech.nutech.handler.ResponeHandler;
-import com.testtech.nutech.model.request.CustomerRequest;
+import com.testtech.nutech.model.request.CustomerUpdateRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -31,6 +31,6 @@ public interface CustomerService {
 
     ResponseEntity<Object> uploadImage(String token, MultipartFile file);
     List<Customer> getAll(String message, HttpStatus httpStatus);
-    ResponseEntity<Object> update(String token, CustomerRequest customerRequest);
+    ResponseEntity<Object> update(String token, CustomerUpdateRequest customerUpdateRequest);
     Customer deleteById(String id);
 }

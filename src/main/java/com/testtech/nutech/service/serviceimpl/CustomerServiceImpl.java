@@ -13,7 +13,7 @@ Version 1.0
 import com.testtech.nutech.utils.ImageStorage;
 import com.testtech.nutech.entity.Customer;
 import com.testtech.nutech.handler.ResponeHandler;
-import com.testtech.nutech.model.request.CustomerRequest;
+import com.testtech.nutech.model.request.CustomerUpdateRequest;
 import com.testtech.nutech.model.response.CustomerResponse;
 import com.testtech.nutech.repository.CustomerRepository;
 import com.testtech.nutech.security.JwtUtils;
@@ -172,7 +172,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Transactional(rollbackOn = Exception.class)
     @Override
-    public ResponseEntity<Object> update(String token, CustomerRequest updateRequest) {
+    public ResponseEntity<Object> update(String token, CustomerUpdateRequest updateRequest) {
         // Mendapatkan email dari token JWT
         String email = jwtUtils.getEmailByToken(token);
 
@@ -184,17 +184,11 @@ public class CustomerServiceImpl implements CustomerService {
             Customer customer = customerOpt.get();
 
             // Update field profile dengan data baru dari request
-            if (updateRequest.getEmail() != null) {
-                customer.setEmail(updateRequest.getEmail());
-            }
             if (updateRequest.getFirst_name() != null) {
                 customer.setFirst_name(updateRequest.getFirst_name());
             }
             if (updateRequest.getLast_name() != null) {
                 customer.setLast_name(updateRequest.getLast_name());
-            }
-            if (updateRequest.getProfile_image() != null) {
-                customer.setProfile_image(updateRequest.getProfile_image());
             }
 
             // Simpan perubahan ke database

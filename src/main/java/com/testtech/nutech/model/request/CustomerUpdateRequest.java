@@ -12,9 +12,6 @@ Version 1.0
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.testtech.nutech.entity.UserCredential;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,22 +23,11 @@ import lombok.NoArgsConstructor;
 @Builder(toBuilder = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({"email", "first_name", "last_name", "profile_image"})// Menyembunyikan field yang null
-public class CustomerRequest {
-
-    private String idCustomer;
+public class CustomerUpdateRequest {
 
     private String first_name;
 
     private String last_name;
 
-    private String email;
-
-    private String profile_image;
-
-    private int balance;
-
-    @OneToOne
-    @JoinColumn(name = "user_credential_id")
-    private UserCredential userCredential;
 
 }

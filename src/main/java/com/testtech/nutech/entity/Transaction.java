@@ -54,7 +54,6 @@ public class Transaction {
     @JoinColumn(name = "service_id") // Pastikan service_id ada
     private Services service;
 
-
     @JsonInclude(JsonInclude.Include.NON_NULL) // Mengabaikan jika bernilai null
     @ManyToOne // Relasi dengan entitas Service
     @JoinColumn(name = "customer_id") // Pastikan service_id ada

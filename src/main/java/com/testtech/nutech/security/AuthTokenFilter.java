@@ -25,13 +25,17 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import javax.servlet.Filter;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import java.io.IOException;
 
 @Component
 @RequiredArgsConstructor
 @Slf4j
 /* AuthTokenFilter -> melakukan verifikasi token jwt , yang dikirim setiap melakukan HTTP Request */
-public class AuthTokenFilter extends OncePerRequestFilter {
+public class AuthTokenFilter extends OncePerRequestFilter implements Filter {
 
     private final JwtUtils jwtUtils;
     private final AuthEntryPoint authEntryPoint;
@@ -70,4 +74,13 @@ public class AuthTokenFilter extends OncePerRequestFilter {
         return null;
     }
 
+    @Override
+    public void init(FilterConfig filterConfig) throws javax.servlet.ServletException {
+        Filter.super.init(filterConfig);
+    }
+
+    @Override
+    public void doFilter(ServletRequest request, ServletResponse response, javax.servlet.FilterChain chain) throws IOException, javax.servlet.ServletException {
+
+    }
 }
