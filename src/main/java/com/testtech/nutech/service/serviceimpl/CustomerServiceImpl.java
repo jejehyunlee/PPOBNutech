@@ -66,7 +66,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Customer getById(String id) {
-        return null;
+        return customerRepository.findById(id).orElse(null);
     }
 
     @Override

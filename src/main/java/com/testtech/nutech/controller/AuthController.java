@@ -13,35 +13,42 @@ Version 1.0
 import com.testtech.nutech.model.request.AuthRequest;
 import com.testtech.nutech.model.request.LoginRequest;
 import com.testtech.nutech.service.AuthService;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
+
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/ppob/api/")
+//@CrossOrigin(origins = "https://localhost:4200", allowCredentials = "true")
+@RequestMapping("/ppob/api/auth/")
 public class AuthController {
 
     private final AuthService authService;
 
     @PostMapping("register")
-    public ResponseEntity<Object> registerCustomer(@RequestBody AuthRequest request) {
+    public ResponseEntity<Object> registerCustomer(@Valid @RequestBody AuthRequest request) {
        return authService.register(request);
-//        return ResponseEntity.status(HttpStatus.CREATED)
-//                .body(register);
     }
 
     @PostMapping("login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
-            return authService.login(request);
+    public ResponseEntity<?> login(@RequestBody LoginRequest request, HttpServletResponse response) {
+            return authService.login(request, response);
     }
 
-
-
+    @PostMapping("logout") 
+    public ResponseEntity<?> logout(HttpServletResponse response) {
+        return authService.logout(response);
+    }
 }
 

@@ -17,28 +17,43 @@ public class AuthValidationServiceImpl implements AuthValidation {
 
     @Override
     public ResponseEntity<Object> validateRegisterRequest(AuthRequest authRequest) {
-        if (userCredentialRepository.existsByEmail(authRequest.getEmail())){
-            ResponeHandler<Object> response = new ResponeHandler<>(103, "User sudah terdaftar", authRequest.getEmail());
-            return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+        String email = authRequest.getEmail();
+        String password = authRequest.getPassword();
+
+        // Email kosong
+        if (email == null || email.trim().isEmpty()) {
+            return new ResponseEntity<>(
+                    new ResponeHandler<>(101, "Email tidak boleh kosong", null),
+                    HttpStatus.BAD_REQUEST
+            );
         }
 
-
-        if (authRequest.getEmail().trim().isEmpty()) {
-            ResponeHandler<Object> response = new ResponeHandler<>(101, "Email tidak boleh kosong", authRequest.getEmail());
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        // Format email invalid
+        if (!email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$")) {
+            return new ResponseEntity<>(
+                    new ResponeHandler<>(102, "Format email tidak sesuai", email),
+                    HttpStatus.BAD_REQUEST
+            );
         }
 
-        if (!authRequest.getEmail().matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$")){
-            ResponeHandler<Object> response = new ResponeHandler<>(102, "Email tidak seusai format", authRequest.getEmail());
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        // Email sudah terdaftar
+        if (userCredentialRepository.existsByEmail(email)) {
+            return new ResponseEntity<>(
+                    new ResponeHandler<>(103, "User sudah terdaftar", email),
+                    HttpStatus.CONFLICT
+            );
         }
 
-        if (authRequest.getPassword() == null || authRequest.getPassword().length() < 8) {
-            ResponeHandler<Object> response = new ResponeHandler<>(105, "Password Minimal 8 Karakter", authRequest.getPassword());
-            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        // Password kosong / kurang dari 8 karakter
+        if (password == null || password.length() < 8) {
+            return new ResponseEntity<>(
+                    new ResponeHandler<>(105, "Password minimal 8 karakter", null),
+                    HttpStatus.BAD_REQUEST // ✅ diperbaiki
+            );
         }
 
-        return null;
+        return null; // ✅ Validasi lolos
     }
+
 
 }

@@ -17,7 +17,6 @@ public class BannerServicesController {
 
     @GetMapping("banner")
     public ResponseEntity<Object> getAllBanners() {
-
         return bannerService.getAllBanners();
     }
     @GetMapping("service")

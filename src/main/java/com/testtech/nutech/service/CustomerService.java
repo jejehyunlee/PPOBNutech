@@ -20,15 +20,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public interface CustomerService {
     Customer create(Customer customer);
     Customer getById(String id);
     ResponseEntity<Object> getByEmail(String token);
-
     ResponeHandler<Object> getBalance (String token);
-
     ResponseEntity<Object> uploadImage(String token, MultipartFile file);
     List<Customer> getAll(String message, HttpStatus httpStatus);
     ResponseEntity<Object> update(String token, CustomerUpdateRequest customerUpdateRequest);

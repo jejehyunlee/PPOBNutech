@@ -13,12 +13,14 @@ Version 1.0
 
 import com.testtech.nutech.model.request.AuthRequest;
 import com.testtech.nutech.model.request.LoginRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseEntity;
 
 public interface AuthService {
 
     ResponseEntity<Object> register(AuthRequest authRequest);
 
-    ResponseEntity<Object> login(LoginRequest loginRequestequesta);
+    ResponseEntity<Object> login(LoginRequest loginRequestequesta, HttpServletResponse servletResponse);
 
+    ResponseEntity<?> logout(HttpServletResponse response);
 }

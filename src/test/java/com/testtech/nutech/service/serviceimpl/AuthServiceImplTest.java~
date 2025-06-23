@@ -1,0 +1,97 @@
+package com.testtech.nutech.service.serviceimpl;
+
+
+import com.testtech.nutech.entity.UserCredential;
+import com.testtech.nutech.handler.ResponeHandler;
+import com.testtech.nutech.model.request.AuthRequest;
+import com.testtech.nutech.repository.UserCredentialRepository;
+import com.testtech.nutech.security.BCryptUtils;
+import com.testtech.nutech.service.AuthValidation;
+import com.testtech.nutech.service.CustomerService;
+import org.junit.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.verification.VerificationMode;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
+import java.util.Objects;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.when;
+
+@ExtendWith(MockitoExtension.class)
+public class AuthServiceImplTest {
+
+    @InjectMocks
+    private AuthServiceImpl authService;
+
+    @Mock
+    private AuthValidation validateAuthRequest;
+
+    @Mock
+    private UserCredentialRepository userCredentialRepository;
+
+    @Mock
+    private CustomerService customerService;
+
+    @Mock
+    private BCryptUtils bCryptUtils;
+
+    @Test
+    public void testRegister_ValidationFails() {
+        AuthRequest request = new AuthRequest();
+        request.setEmail("test@example.com");
+        ResponseEntity<Object> errorResponse = new ResponseEntity<>("Invalid", HttpStatus.BAD_REQUEST);
+
+        when(validateAuthRequest.validateRegisterRequest(request)).thenReturn(errorResponse);
+
+        ResponseEntity<Object> result = authService.register(request);
+
+        assertEquals(HttpStatus.BAD_REQUEST, result.getStatusCode());
+        assertEquals("Invalid", result.getBody());
+        Objects.requireNonNull(verify(userCredentialRepository, never())).saveAndFlush(any());
+        Objects.requireNonNull(verify((UserCredentialRepository) customerService, never())).saveAndFlush(any());
+    }
+
+    private JpaRepository<Object, Object> verify(UserCredentialRepository userCredentialRepository, VerificationMode never) {
+        return null;
+    }
+
+    @Test
+//    public void testRegister_Success() {
+//        AuthRequest request = new AuthRequest();
+//        request.setEmail("test@example.com");
+//        request.setPassword("123456");
+//        request.setFirst_name("Jefri");
+//        request.setLast_name("Saputra");
+//
+//        when(validateAuthRequest.validateRegisterRequest(request)).thenReturn(null);
+//        when(bCryptUtils.hashPassword("123456")).thenReturn("hashed_pass");
+//
+//        UserCredential savedCredential = UserCredential.builder()
+//                .email("test@example.com")
+//                .password("hashed_pass")
+//                .build();
+//
+//        when(userCredentialRepository.saveAndFlush(any(UserCredential.class))).thenReturn(savedCredential);
+//
+//        ResponseEntity<Object> result = authService.register(request);
+//
+//        assertEquals(HttpStatus.OK, result.getStatusCode());
+//        ResponeHandler<?> body = (ResponeHandler<?>) result.getBody();
+//        assertEquals(0, body.getStatus());
+//        assertEquals("Berhasil register silahkan login", body.getMessage());
+//        assertEquals("test@example.com", body.getData());
+//
+//        assert verify(userCredentialRepository) != null;
+//        verify(userCredentialRepository).saveAndFlush(any());
+//        verify(customerService).create(any());
+//    }
+
+}

@@ -13,6 +13,7 @@ Version 1.0
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -45,31 +46,77 @@ public class AuthTokenFilter extends OncePerRequestFilter implements Filter {
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
-        try {
-            String jwt = parseJwt(request);
+//        try {
+//            String jwt = parseJwt(request);
+//
+//            if (jwt != null && jwtUtils.validateJwtToken(jwt)) {
+//                String email = jwtUtils.getEmailByToken(jwt);
+//
+//                UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+//                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+//                        userDetails,
+//                        null,
+//                        userDetails.getAuthorities()
+//                );
+//                authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+//                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+//            }
+//        } catch (Exception e) {
+//            log.error("Cannot set user authentication: {}", e.getMessage());
+//        }
+//        filterChain.doFilter(request, response);
 
-            if (jwt != null && jwtUtils.validateJwtToken(jwt)) {
+        String path = request.getRequestURI();
+
+        // ⛔ Lewati pengecekan token untuk endpoint login /auth
+        if (path.startsWith("/ppob/api/auth/login")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+
+        try {
+            String jwt = parseJwtFromCookies(request);
+
+            if (jwt != null && jwtUtils.validateJwtToken(jwt)
+                    && SecurityContextHolder.getContext().getAuthentication() == null) {
+
                 String email = jwtUtils.getEmailByToken(jwt);
 
                 UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                         userDetails,
                         null,
                         userDetails.getAuthorities()
                 );
                 authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             }
         } catch (Exception e) {
             log.error("Cannot set user authentication: {}", e.getMessage());
         }
+
         filterChain.doFilter(request, response);
     }
+
 
     public String parseJwt(HttpServletRequest request) {
         String headerAuth = request.getHeader("Authorization");
         if (headerAuth != null && headerAuth.startsWith("Bearer ")) {
             return headerAuth.substring(7);
+        }
+        return null;
+    }
+
+    public String parseJwtFromCookies(HttpServletRequest request) {
+        if (request.getCookies() != null) {
+            for (Cookie cookie : request.getCookies()) {
+                if ("jwt".equals(cookie.getName())) {
+                    return cookie.getValue();
+                }
+            }
         }
         return null;
     }
