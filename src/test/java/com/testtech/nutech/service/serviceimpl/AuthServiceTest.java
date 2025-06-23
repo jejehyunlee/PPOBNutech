@@ -89,7 +89,7 @@ public class AuthServiceTest {
         ResponeHandler<?> body = (ResponeHandler<?>) response.getBody();
         assertNotNull(body);
         assertEquals(0, body.getStatus());
-        assertEquals("Berhasil register silahkan login", body.getMessage());
+        assertEquals("Berhasil daftar silahkan login", body.getMessage());
         assertEquals("test@example.com", body.getData());
 
         System.out.println("Berhasil Register" +
