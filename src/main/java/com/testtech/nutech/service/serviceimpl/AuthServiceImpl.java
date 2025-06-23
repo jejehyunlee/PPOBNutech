@@ -127,7 +127,7 @@ public class AuthServiceImpl implements AuthService {
                     .build();
             customerService.create(customer);
 
-            ResponeHandler<Object> response = new ResponeHandler<>(0, "Berhasil register silahkan login", authRequest.getEmail());
+            ResponeHandler<Object> response = new ResponeHandler<>(0, "Berhasil daftar silahkan login", authRequest.getEmail());
             return new ResponseEntity<>(response, HttpStatus.OK);
 
     }
